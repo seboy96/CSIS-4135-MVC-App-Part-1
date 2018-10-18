@@ -35,3 +35,11 @@ body {
         display: none;
     }
 }
+
+.header {
+    padding: 20px;
+    background-color: dodgerblue;
+    border-radius: 10px;
+    color: white;
+}
+
