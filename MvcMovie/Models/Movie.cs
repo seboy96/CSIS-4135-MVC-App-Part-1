@@ -19,7 +19,7 @@ namespace MvcMovie.Models
         [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
         [DataType(DataType.Date)]
         [Required (ErrorMessage = "Please enter a release date!")]
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         [Required (ErrorMessage = "Please enter a genre!")]
         public string Genre { get; set; }
@@ -32,5 +32,7 @@ namespace MvcMovie.Models
 
         [Required (ErrorMessage = "Please enter a rating!")]
         public string Rating { get; set; }
+
+        public string Poster { get; set; }
     }
 }
