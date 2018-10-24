@@ -24,7 +24,7 @@ namespace MvcMovie.Models
         [Required (ErrorMessage = "Please enter a genre!")]
         public string Genre { get; set; }
 
-        [Range(1, Double.MaxValue)]
+        [Range(1, 100)]
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18, 2)")]
         [Required (ErrorMessage = "Please enter a price!")]
