@@ -1,0 +1,32 @@
+﻿@model MvcMovie.Models.Review
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+
+<h2>Write a Review</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div class="form-group">
+                <label class="control-label" for="Name">Reviewer</label>
+                <input class="form-control" type="text" id="Reviewer" name="Reviewer">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="Comment">Comment</label>
+                <textarea class="form-control" id="Comment" name="Comment"></textarea>
+            </div>
+            <input asp-for="MovieID" class="form-control" type="hidden" />
+            <div class="form-group">
+                <input class="btn btn-info" type="submit" value="Submit" />
+                <a asp-action="Details" asp-controller="Movies" asp-route-id="@ViewData["MovieID"]" class="btn btn-info">Back to Movie Details</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
