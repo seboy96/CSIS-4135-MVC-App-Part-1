@@ -19,10 +19,40 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Reviews
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var mvcMovieContext = _context.Review.Include(r => r.Movie);
-            return View(await mvcMovieContext.ToListAsync());
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.MovieSortParm = sortOrder == "Movie" ? "movie_desc" : "Movie";
+            var reviews = from r in _context.Review
+                          select r;
+            ViewData["Glyph"] = "";
+            ViewData["indicator"] = 0;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    reviews = reviews.OrderByDescending(r => r.Name).Include(r => r.Movie); ;
+                    ViewData["Glyph"] = "glyphicon glyphicon-triangle-bottom";
+                    ViewData["indicator"] = 1;
+                    break;
+                case "Movie":
+                    reviews = reviews.OrderBy(r => r.Movie.Title).Include(r => r.Movie); ;
+                    ViewData["Glyph"] = "glyphicon glyphicon-triangle-top";
+                    ViewData["indicator"] = 2;
+                    break;
+                case "movie_desc":
+                    reviews = reviews.OrderByDescending(r => r.Movie.Title).Include(r => r.Movie); ;
+                    ViewData["Glyph"] = "glyphicon glyphicon-triangle-bottom";
+                    ViewData["indicator"] = 2;
+                    break;
+                default:
+                    reviews = reviews.OrderBy(r => r.Name).Include(r => r.Movie);
+                    ViewData["Glyph"] = "glyphicon glyphicon-triangle-top";
+                    ViewData["indicator"] = 1;
+                    break;
+            }
+            //var mvcMovieContext = _context.Review.Include(r => r.Movie);
+            //return View(await mvcMovieContext.ToListAsync());
+            return View(reviews.ToList());
         }
 
         // GET: Reviews/Details/5
@@ -45,9 +75,9 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Reviews/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            ViewData["MovieID"] = new SelectList(_context.Movie, "ID", "Genre");
+            ViewData["MovieID"] = id;
             return View();
         }
 
@@ -56,16 +86,15 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Comment,MovieID")] Review review)
+        public async Task<IActionResult> Create([Bind("Name,Comment,MovieID")] Review review)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(review);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), "Movies", new { id = review.MovieID });
             }
             ViewData["MovieID"] = new SelectList(_context.Movie, "ID", "Genre", review.MovieID);
-            var moviesID = _context.Review.Include(m => m.Movie);
             return View(review);
         }
 
@@ -83,6 +112,7 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
             ViewData["MovieID"] = new SelectList(_context.Movie, "ID", "Genre", review.MovieID);
+            ViewData["MoviesID"] = review.MovieID;
             return View(review);
         }
 
@@ -116,9 +146,9 @@ namespace MvcMovie.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), "Movies", new { id = review.MovieID });
             }
-            ViewData["MovieID"] = new SelectList(_context.Movie, "ID", "Genre", review.MovieID);
+            ViewData["MovieID"] = review.MovieID;
             return View(review);
         }
 
@@ -137,7 +167,7 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["MoviesID"] = review.MovieID;
             return View(review);
         }
 
@@ -149,7 +179,7 @@ namespace MvcMovie.Controllers
             var review = await _context.Review.FindAsync(id);
             _context.Review.Remove(review);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), "Movies", new { id = review.MovieID });
         }
 
         private bool ReviewExists(int id)

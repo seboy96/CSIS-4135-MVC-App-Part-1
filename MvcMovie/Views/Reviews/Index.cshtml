@@ -1,25 +1,42 @@
 ﻿@model IEnumerable<MvcMovie.Models.Review>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Review List";
 }
 
-<h2>Index</h2>
+@{ 
+    int indicator = (int) ViewData["indicator"];
+}
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@{ 
+    var movieTitles = ViewData["movieTitles"];
+}
+
+<h2>Review List</h2>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+                @if (indicator == 1)
+                {
+                    <span>
+                        <i class="@ViewData["Glyph"]" id="sort"></i>
+                    </span>
+                }
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Comment)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.movie)
+                @Html.ActionLink("Movie", "Index", new { sortOrder = ViewBag.MovieSortParm })
+                @if (indicator == 2)
+                {
+                    <span>
+                        <i class="@ViewData["Glyph"]" id="sort"></i>
+                    </span>
+                }
             </th>
             <th></th>
         </tr>
@@ -34,12 +51,7 @@
                 @Html.DisplayFor(modelItem => item.Comment)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.movie.Genre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                @Html.DisplayFor(modelItem => item.Movie.Title)
             </td>
         </tr>
 }

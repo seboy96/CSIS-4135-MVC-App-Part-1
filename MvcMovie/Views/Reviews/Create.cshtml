@@ -12,21 +12,25 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div class="form-group">
-                <label class="control-label" for="Name">Reviewer</label>
-                <input class="form-control" type="text" id="Reviewer" name="Reviewer">
+                <label class="control-label" for="Name">Name</label>
+                <input class="form-control" type="text" id="Name" name="Name" value="">
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label" for="Comment">Comment</label>
                 <textarea class="form-control" id="Comment" name="Comment"></textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
-            <input asp-for="MovieID" class="form-control" type="hidden" />
+            <input asp-for="MovieID" class="form-control" type="hidden" value=@ViewData["MovieID"]/>
             <div class="form-group">
                 <input class="btn btn-info" type="submit" value="Submit" />
-                <a asp-action="Details" asp-controller="Movies" asp-route-id="@ViewData["MovieID"]" class="btn btn-info">Back to Movie Details</a>
+                <a asp-action="Details" asp-controller="Movies" asp-route-id=@ViewData["MovieID"] class="btn btn-info">Back to Movie Details</a>
             </div>
         </form>
     </div>
 </div>
 
-
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 

@@ -49,7 +49,6 @@ namespace MvcMovie.Controllers
             var movieGenreVM = new MovieGenreViewModel();
             movieGenreVM.genres = new SelectList(await genreQuery.Distinct().ToListAsync());
             movieGenreVM.movies = await movies.ToListAsync();
-
             return View(movieGenreVM);
         }
 
@@ -68,7 +67,13 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
 
-            return View(movie);
+            var reviewVM = new ReviewViewModel();
+            reviewVM.movie = movie;
+            var reviews = from r in _context.Review
+                          select r;
+            reviews = reviews.Where(r => r.MovieID == id);
+            reviewVM.reviews = await reviews.ToListAsync();
+            return View(reviewVM);
         }
 
         // GET: Movies/Create

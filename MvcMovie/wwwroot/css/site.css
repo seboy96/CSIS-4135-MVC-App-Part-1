@@ -47,3 +47,14 @@ body {
     padding-bottom: 15px;
 }
 
+.space {
+    margin-top: 25px;
+}
+
+.row {
+    margin-left: 5px;
+}
+
+#sort {
+    color: steelblue;
+}

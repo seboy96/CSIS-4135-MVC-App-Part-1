@@ -1,4 +1,4 @@
-﻿@model MvcMovie.Models.Movie
+﻿@model MvcMovie.Models.ReviewViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -12,47 +12,63 @@
     <div class="col-md-5">
         <dl class="dl-horizontal row">
             <dt>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.movie.Title)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Title)
+                @Html.DisplayFor(model => model.movie.Title)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Rating)
+                @Html.DisplayNameFor(model => model.movie.Rating)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Rating)
+                @Html.DisplayFor(model => model.movie.Rating)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
+                @Html.DisplayNameFor(model => model.movie.ReleaseDate)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.ReleaseDate)
+                @Html.DisplayFor(model => model.movie.ReleaseDate)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Genre)
+                @Html.DisplayNameFor(model => model.movie.Genre)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Genre)
+                @Html.DisplayFor(model => model.movie.Genre)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.movie.Price)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Price)
+                @Html.DisplayFor(model => model.movie.Price)
             </dd>
         </dl>
     </div>
     <div class="col-md-3">
-        <img src="@Model.Poster" class="img-responsive" />
+        <img src="@Model.movie.Poster" class="img-responsive" />
     </div>
 </div>
-<div class="container">
-    <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-primary">Edit</a> |
+<div class="container space">
+    <a asp-action="Edit" asp-route-id="@Model.movie.ID" class="btn btn-primary">Edit</a> |
     <a asp-action="Index" class="btn btn-primary">Back to List</a>
 </div>
 <h3 class="bold">Reviews</h3>
 <hr>
-<div>
-    <a asp-action="Create" asp-controller="Reviews" asp-route-id="@Model.ID" class="btn btn-lg btn-info"><span class="glyphicon glyphicon-pencil"></span> Write a Review</a>
+@foreach (var item in Model.reviews)
+{
+    <div class="row">
+        <div class="col-sm-4">
+            <p>@item.Comment</p>
+            <em>- @item.Name</em>
+        </div>
+        <div class="col-sm-2">
+            <span>
+                <a class="btn btn-sm btn-outline-info" href="/Reviews/Edit/@item.ID">Edit</a>
+                <a class="btn btn-sm btn-outline-info" href="/Reviews/Delete/@item.ID">Delete</a>
+            </span>
+        </div>
+
+    </div>
+}
+<div class="space">
+    <a asp-action="Create" asp-controller="Reviews" asp-route-id="@Model.movie.ID" class="btn btn-lg btn-info"><span class="glyphicon glyphicon-pencil"></span> Write a Review</a>
 </div>
